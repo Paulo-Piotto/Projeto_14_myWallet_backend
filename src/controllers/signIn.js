@@ -25,7 +25,7 @@ async function logUser(req, res){
 }
 
 export{
-    logUser
+    logUser,
 }
 
 //ab359f59-a4f2-444d-a079-b26935875e9d
