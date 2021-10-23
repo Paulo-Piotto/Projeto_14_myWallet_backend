@@ -11,8 +11,14 @@ async function postUser(req, res){
   const passwordHash = bcrypt.hashSync(password, 12);
 
   try {
-    await connection.query('INSERT INTO users (name, email, password) VALUES ($1 , $2, $3)', [name, email, passwordHash]);
-    res.sendStatus(201);
+    const result = await connection.query('SELECT * FROM users WHERE email = $1', [email])
+    if(result.rowCount > 0){
+      res.sendStatus(409);
+    }else{
+      await connection.query('INSERT INTO users (name, email, password) VALUES ($1 , $2, $3)', [name, email, passwordHash]);
+      res.sendStatus(201);
+    }
+    
   } catch (error) {
       res.sendStatus(500);
   }

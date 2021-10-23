@@ -13,6 +13,6 @@ app.post('/sign-up', postUser);
 
 app.post('/sign-in', logUser);
 
-app.get('/transactions', postTransaction);
+app.post('/transactions', postTransaction);
 
 app.listen(4000);

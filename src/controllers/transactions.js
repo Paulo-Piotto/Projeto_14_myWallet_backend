@@ -21,7 +21,8 @@ async function postTransaction(req, res){
        if(session){
            const date = dayjs().format();
            if(!transactionSchema.validate(body).error){
-
+               await connection.query('INSERT INTO transactions ("userId", value, date) VALUES ($1, $2, $3)', [session.userId, body.value.toFixed(2), date])
+               res.sendStatus(200);
            }else{
                res.sendStatus(400)
            }
