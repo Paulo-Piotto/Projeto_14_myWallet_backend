@@ -7,7 +7,8 @@ async function postTransaction(req, res){
     const token = authorization?.replace('Bearer ', '');
     const body = req.body;
     const transactionSchema = joi.object({
-        value: joi.number().required()
+        value: joi.number().required(),
+        description: joi.string().min(1).required()
     })
 
     if(!token){
@@ -21,7 +22,7 @@ async function postTransaction(req, res){
        if(session){
            const date = dayjs().format();
            if(!transactionSchema.validate(body).error){
-               await connection.query('INSERT INTO transactions ("userId", value, date) VALUES ($1, $2, $3)', [session.userId, body.value.toFixed(2), date])
+               await connection.query('INSERT INTO transactions ("userId", value, description, date) VALUES ($1, $2, $3, $4)', [session.userId, body.value.toFixed(2), body.description, date])
                res.sendStatus(200);
            }else{
                res.sendStatus(400)
@@ -31,7 +32,7 @@ async function postTransaction(req, res){
            res.sendStatus(401);
        }
     } catch (error) {
-        
+        res.sendStatus(500);
     }
 }
 

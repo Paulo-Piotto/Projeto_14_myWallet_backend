@@ -20,7 +20,7 @@ async function logUser(req, res){
            res.sendStatus(401);
        }
    } catch (error) {
-       res.send(error).status(500);
+       res.sendStatus(500);
    }
 }
 
