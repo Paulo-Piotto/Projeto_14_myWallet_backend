@@ -10,7 +10,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
 app.post('/sign-up', postUser);
 
 app.post('/sign-in', logUser);

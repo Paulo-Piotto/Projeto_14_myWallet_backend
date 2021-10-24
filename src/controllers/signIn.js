@@ -15,7 +15,10 @@ async function logUser(req, res){
        if(user && bcrypt.compareSync(password, user.password)){
            const token = uuid();
            await connection.query('INSERT INTO sessions ("userId", token) VALUES ($1, $2)', [user.id, token]);
-           res.send(token).status(200);
+
+           const rows = await connection.query('SELECT sessions.token, users.name FROM sessions JOIN users ON sessions."userId" = users.id WHERE token = $1', [token]);
+           const userData = rows.rows[0];
+           res.send(userData).status(200);
        }else{
            res.sendStatus(401);
        }
