@@ -4,7 +4,6 @@ async function getBalance(req, res){
     const authorization = req.headers['authorization'];
     const token = authorization?.replace('Bearer ', '');
     let amount = {
-        type: "balance",
         value: 0
     };
 
@@ -23,7 +22,7 @@ async function getBalance(req, res){
                 amount.value += Number(transaction.value);
             })
 
-            res.send([amount, ...transactions]);
+            res.send({amount, history: [...transactions]});
 
         }else{
             res.sendStatus(401);
